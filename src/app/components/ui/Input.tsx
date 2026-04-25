@@ -1,18 +1,10 @@
-import {
-  ChangeEvent,
-  forwardRef,
-  InputHTMLAttributes,
-  useCallback,
-  useRef,
-  useState,
-} from "react";
+import { ChangeEvent, forwardRef, InputHTMLAttributes, useCallback, useRef, useState } from "react";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Types
 // ─────────────────────────────────────────────────────────────────────────────
 
-export interface InputProps
-  extends Omit<InputHTMLAttributes<HTMLInputElement>, "onChange"> {
+export interface InputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, "onChange"> {
   /** ラベルテキスト */
   label: string;
   /** バリデーションエラーメッセージ */
@@ -28,27 +20,12 @@ export interface InputProps
 // ─────────────────────────────────────────────────────────────────────────────
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(
-  (
-    {
-      label,
-      error,
-      hint,
-      id,
-      className = "",
-      onChange,
-      disabled,
-      required,
-      ...props
-    },
-    ref,
-  ) => {
+  ({ label, error, hint, id, className = "", onChange, disabled, required, ...props }, ref) => {
     // Generate stable id if not provided
-    const generatedId = useRef(
-      `input-${Math.random().toString(36).slice(2, 9)}`,
-    ).current;
-    const inputId   = id ?? generatedId;
-    const errorId   = `${inputId}-error`;
-    const hintId    = `${inputId}-hint`;
+    const generatedId = useRef(`input-${Math.random().toString(36).slice(2, 9)}`).current;
+    const inputId = id ?? generatedId;
+    const errorId = `${inputId}-error`;
+    const hintId = `${inputId}-hint`;
 
     const hasError = Boolean(error);
 
@@ -68,17 +45,12 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           htmlFor={inputId}
           className={[
             "text-caption font-semibold leading-[1.43]",
-            disabled
-              ? "text-warm-500 cursor-not-allowed"
-              : "text-[rgba(0,0,0,0.95)]",
+            disabled ? "text-warm-500 cursor-not-allowed" : "text-[rgba(0,0,0,0.95)]",
           ].join(" ")}
         >
           {label}
           {required && (
-            <span
-              aria-hidden="true"
-              className="ml-1 text-orange"
-            >
+            <span aria-hidden="true" className="ml-1 text-orange">
               *
             </span>
           )}
@@ -92,8 +64,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           required={required}
           aria-invalid={hasError}
           aria-describedby={
-            [hasError && errorId, hint && hintId].filter(Boolean).join(" ") ||
-            undefined
+            [hasError && errorId, hint && hintId].filter(Boolean).join(" ") || undefined
           }
           onChange={handleChange}
           className={[
@@ -131,10 +102,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
 
         {/* Hint text (non-error) */}
         {!hasError && hint && (
-          <p
-            id={hintId}
-            className="text-micro text-warm-700 leading-[1.33]"
-          >
+          <p id={hintId} className="text-micro text-warm-700 leading-[1.33]">
             {hint}
           </p>
         )}

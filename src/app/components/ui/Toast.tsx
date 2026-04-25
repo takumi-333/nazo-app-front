@@ -18,9 +18,9 @@ import { createPortal } from "react-dom";
 export type ToastVariant = "success" | "error" | "info";
 
 export interface ToastItem {
-  id:        string;
-  message:   string;
-  variant:   ToastVariant;
+  id: string;
+  message: string;
+  variant: ToastVariant;
   /** 表示時間 ms（デフォルト: 3000） */
   duration?: number;
 }
@@ -39,17 +39,20 @@ const ToastContext = createContext<ToastContextValue | null>(null);
 // Variant styles
 // ─────────────────────────────────────────────────────────────────────────────
 
-const variantConfig: Record<
-  ToastVariant,
-  { bg: string; icon: ReactNode; label: string }
-> = {
+const variantConfig: Record<ToastVariant, { bg: string; icon: ReactNode; label: string }> = {
   success: {
     bg: "bg-[#104d1e]",
     label: "成功",
     icon: (
       <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
         <circle cx="8" cy="8" r="7" stroke="rgba(255,255,255,0.6)" strokeWidth="1.2" />
-        <path d="M5 8l2 2 4-4" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+        <path
+          d="M5 8l2 2 4-4"
+          stroke="white"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
       </svg>
     ),
   },
@@ -80,15 +83,9 @@ const variantConfig: Record<
 // Single Toast item UI
 // ─────────────────────────────────────────────────────────────────────────────
 
-function ToastElement({
-  item,
-  onDismiss,
-}: {
-  item: ToastItem;
-  onDismiss: (id: string) => void;
-}) {
-  const config       = variantConfig[item.variant];
-  const duration     = item.duration ?? 3000;
+function ToastElement({ item, onDismiss }: { item: ToastItem; onDismiss: (id: string) => void }) {
+  const config = variantConfig[item.variant];
+  const duration = item.duration ?? 3000;
   const [exiting, setExiting] = useState(false);
 
   // プログレスバー用
@@ -100,8 +97,8 @@ function ToastElement({
     startRef.current = performance.now();
 
     const tick = (now: number) => {
-      const elapsed  = now - (startRef.current ?? now);
-      const pct      = Math.max(0, 100 - (elapsed / duration) * 100);
+      const elapsed = now - (startRef.current ?? now);
+      const pct = Math.max(0, 100 - (elapsed / duration) * 100);
       setProgress(pct);
 
       if (elapsed >= duration) {
@@ -153,7 +150,12 @@ function ToastElement({
         className="shrink-0 opacity-60 hover:opacity-100 transition-opacity duration-[160ms] ml-1"
       >
         <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-          <path d="M11 3L3 11M3 3l8 8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+          <path
+            d="M11 3L3 11M3 3l8 8"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+          />
         </svg>
       </button>
 
@@ -174,13 +176,10 @@ function ToastElement({
 export function ToastProvider({ children }: { children: ReactNode }) {
   const [toasts, setToasts] = useState<ToastItem[]>([]);
 
-  const show = useCallback(
-    (message: string, variant: ToastVariant = "info", duration = 3000) => {
-      const id = `toast-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`;
-      setToasts((prev) => [...prev, { id, message, variant, duration }]);
-    },
-    [],
-  );
+  const show = useCallback((message: string, variant: ToastVariant = "info", duration = 3000) => {
+    const id = `toast-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`;
+    setToasts((prev) => [...prev, { id, message, variant, duration }]);
+  }, []);
 
   const dismiss = useCallback((id: string) => {
     setToasts((prev) => prev.filter((t) => t.id !== id));
@@ -228,9 +227,9 @@ export function useToast() {
   }
 
   return {
-    show:    ctx.show,
+    show: ctx.show,
     success: (msg: string, dur?: number) => ctx.show(msg, "success", dur),
-    error:   (msg: string, dur?: number) => ctx.show(msg, "error",   dur),
-    info:    (msg: string, dur?: number) => ctx.show(msg, "info",    dur),
+    error: (msg: string, dur?: number) => ctx.show(msg, "error", dur),
+    info: (msg: string, dur?: number) => ctx.show(msg, "info", dur),
   } as const;
 }

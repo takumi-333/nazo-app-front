@@ -5,17 +5,12 @@ import { HTMLAttributes } from "react";
 // ─────────────────────────────────────────────────────────────────────────────
 
 export type BadgeStatus =
-  | "published"   // 公開
-  | "draft"       // 下書き
-  | "private"     // 非公開
-  | "suspended";  // 停止
+  | "published" // 公開
+  | "draft" // 下書き
+  | "private" // 非公開
+  | "suspended"; // 停止
 
-export type BadgeVariant =
-  | BadgeStatus
-  | "new"
-  | "info"
-  | "warning"
-  | "danger";
+export type BadgeVariant = BadgeStatus | "new" | "info" | "warning" | "danger";
 
 export interface BadgeProps extends HTMLAttributes<HTMLSpanElement> {
   /** バッジのバリアント */
@@ -31,71 +26,71 @@ export interface BadgeProps extends HTMLAttributes<HTMLSpanElement> {
 // ─────────────────────────────────────────────────────────────────────────────
 
 interface BadgeConfig {
-  label:   string;
-  dot:     string;  // dot color class
-  bg:      string;
-  text:    string;
-  border:  string;
+  label: string;
+  dot: string; // dot color class
+  bg: string;
+  text: string;
+  border: string;
 }
 
 const badgeConfig: Record<BadgeVariant, BadgeConfig> = {
   // ── ステータス ──────────────────────────────────────────
   published: {
-    label:  "公開",
-    dot:    "bg-green",
-    bg:     "bg-[#f0fdf4]",
-    text:   "text-[#166534]",
+    label: "公開",
+    dot: "bg-green",
+    bg: "bg-[#f0fdf4]",
+    text: "text-[#166534]",
     border: "border-[#bbf7d0]",
   },
   draft: {
-    label:  "下書き",
-    dot:    "bg-warm-400",
-    bg:     "bg-warm-100",
-    text:   "text-warm-700",
+    label: "下書き",
+    dot: "bg-warm-400",
+    bg: "bg-warm-100",
+    text: "text-warm-700",
     border: "border-warm-300",
   },
   private: {
-    label:  "非公開",
-    dot:    "bg-warm-500",
-    bg:     "bg-warm-50",
-    text:   "text-warm-700",
+    label: "非公開",
+    dot: "bg-warm-500",
+    bg: "bg-warm-50",
+    text: "text-warm-700",
     border: "border-warm-200",
   },
   suspended: {
-    label:  "停止",
-    dot:    "bg-orange",
-    bg:     "bg-[#fff4ed]",
-    text:   "text-orange",
+    label: "停止",
+    dot: "bg-orange",
+    bg: "bg-[#fff4ed]",
+    text: "text-orange",
     border: "border-[#fcd8b2]",
   },
 
   // ── 汎用 ──────────────────────────────────────────────
   new: {
-    label:  "NEW",
-    dot:    "bg-notion-blue",
-    bg:     "bg-badge-bg",
-    text:   "text-badge-text",
+    label: "NEW",
+    dot: "bg-notion-blue",
+    bg: "bg-badge-bg",
+    text: "text-badge-text",
     border: "border-[#c0dff8]",
   },
   info: {
-    label:  "情報",
-    dot:    "bg-notion-blue",
-    bg:     "bg-badge-bg",
-    text:   "text-badge-text",
+    label: "情報",
+    dot: "bg-notion-blue",
+    bg: "bg-badge-bg",
+    text: "text-badge-text",
     border: "border-[#c0dff8]",
   },
   warning: {
-    label:  "注意",
-    dot:    "bg-riddle-gold",
-    bg:     "bg-riddle-gold-bg",
-    text:   "text-riddle-gold",
+    label: "注意",
+    dot: "bg-riddle-gold",
+    bg: "bg-riddle-gold-bg",
+    text: "text-riddle-gold",
     border: "border-[#f3d7a0]",
   },
   danger: {
-    label:  "危険",
-    dot:    "bg-orange",
-    bg:     "bg-[#fff4ed]",
-    text:   "text-orange",
+    label: "危険",
+    dot: "bg-orange",
+    bg: "bg-[#fff4ed]",
+    text: "text-orange",
     border: "border-[#fcd8b2]",
   },
 };
@@ -104,14 +99,8 @@ const badgeConfig: Record<BadgeVariant, BadgeConfig> = {
 // Component
 // ─────────────────────────────────────────────────────────────────────────────
 
-export function Badge({
-  variant,
-  label,
-  dot    = false,
-  className = "",
-  ...props
-}: BadgeProps) {
-  const cfg       = badgeConfig[variant];
+export function Badge({ variant, label, dot = false, className = "", ...props }: BadgeProps) {
+  const cfg = badgeConfig[variant];
   const displayLabel = label ?? cfg.label;
 
   return (
@@ -140,10 +129,7 @@ export function Badge({
       {dot && (
         <span
           aria-hidden="true"
-          className={[
-            "inline-block w-1.5 h-1.5 rounded-full shrink-0",
-            cfg.dot,
-          ].join(" ")}
+          className={["inline-block w-1.5 h-1.5 rounded-full shrink-0", cfg.dot].join(" ")}
         />
       )}
       {displayLabel}
@@ -155,7 +141,15 @@ export function Badge({
 // Convenience wrappers (画面仕様書 P-05 の4ステータス)
 // ─────────────────────────────────────────────────────────────────────────────
 
-export const PublishedBadge  = (props: Omit<BadgeProps, "variant">) => <Badge variant="published"  dot {...props} />;
-export const DraftBadge      = (props: Omit<BadgeProps, "variant">) => <Badge variant="draft"      dot {...props} />;
-export const PrivateBadge    = (props: Omit<BadgeProps, "variant">) => <Badge variant="private"    dot {...props} />;
-export const SuspendedBadge  = (props: Omit<BadgeProps, "variant">) => <Badge variant="suspended" dot {...props} />;
+export const PublishedBadge = (props: Omit<BadgeProps, "variant">) => (
+  <Badge variant="published" dot {...props} />
+);
+export const DraftBadge = (props: Omit<BadgeProps, "variant">) => (
+  <Badge variant="draft" dot {...props} />
+);
+export const PrivateBadge = (props: Omit<BadgeProps, "variant">) => (
+  <Badge variant="private" dot {...props} />
+);
+export const SuspendedBadge = (props: Omit<BadgeProps, "variant">) => (
+  <Badge variant="suspended" dot {...props} />
+);
