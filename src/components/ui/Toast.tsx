@@ -79,10 +79,6 @@ const variantConfig: Record<ToastVariant, { bg: string; icon: ReactNode; label: 
   },
 };
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Single Toast item UI
-// ─────────────────────────────────────────────────────────────────────────────
-
 function ToastElement({ item, onDismiss }: { item: ToastItem; onDismiss: (id: string) => void }) {
   const config = variantConfig[item.variant];
   const duration = item.duration ?? 3000;
@@ -169,12 +165,13 @@ function ToastElement({ item, onDismiss }: { item: ToastItem; onDismiss: (id: st
   );
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Provider
-// ─────────────────────────────────────────────────────────────────────────────
-
 export function ToastProvider({ children }: { children: ReactNode }) {
   const [toasts, setToasts] = useState<ToastItem[]>([]);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const show = useCallback((message: string, variant: ToastVariant = "info", duration = 3000) => {
     const id = `toast-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`;
@@ -186,40 +183,28 @@ export function ToastProvider({ children }: { children: ReactNode }) {
   }, []);
 
   return (
-    <ToastContext.Provider value={{ show }}>
+    <ToastContext.Provider value={{show}}>
       {children}
 
-      {/* Portal: Toast stack */}
-      {typeof document !== "undefined" &&
+      {mounted &&
         createPortal(
           <div
             aria-live="polite"
             aria-atomic="false"
             className="fixed bottom-6 left-1/2 -translate-x-1/2 z-[9999] flex flex-col gap-2 items-center pointer-events-none"
           >
-            {toasts.map((t) => (
+           {toasts.map((t) => (
               <div key={t.id} className="pointer-events-auto">
                 <ToastElement item={t} onDismiss={dismiss} />
               </div>
             ))}
           </div>,
-          document.body,
+          document.body
         )}
     </ToastContext.Provider>
   );
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Hook
-// ─────────────────────────────────────────────────────────────────────────────
-
-/**
- * @example
- * const toast = useToast();
- * toast.success("正解！おめでとうございます");
- * toast.error("不正解です。もう一度お試しください");
- * toast.info("ヒントが表示されました");
- */
 export function useToast() {
   const ctx = useContext(ToastContext);
   if (!ctx) {
