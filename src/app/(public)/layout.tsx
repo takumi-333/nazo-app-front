@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import "@/app/globals.css";
 
 export const metadata: Metadata = {
   title: "ちょこ謎 | スキマ時間に、ちょこっと謎解き。",
