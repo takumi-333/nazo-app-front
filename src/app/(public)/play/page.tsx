@@ -42,6 +42,7 @@ export default function PlayPage() {
         riddleId={riddle?.riddle_id}
         onCorrect={handleCorrect}
         onWrong={handleWrong}
+        onGiveup={handleGiveup}
         disabled={loading}
       />
     </main>

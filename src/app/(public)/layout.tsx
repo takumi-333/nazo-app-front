@@ -1,6 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-import "@/app/globals.css";
 
 export const metadata: Metadata = {
   title: "ちょこ謎 | スキマ時間に、ちょこっと謎解き。",
@@ -12,14 +10,14 @@ export default function PublicLayout({ children }: { children: React.ReactNode }
   const isLoggedIn = false;
 
   return (
-    <div className={` min-h-screen bg-white text-notion-black flex flex-col`}>
+    <div className={` min-h-screen bg-canvas text-text-main flex flex-col`}>
       {/* ヘッダー */}
-      <header className="h-[60px] px-4 md:px-8 flex items-center justify-between border-b border-notion-border sticky top-0 bg-white/80 backdrop-blur-md z-50"></header>
+      <header className="h-[60px] px-4 md:px-8 flex items-center justify-between border-b border-header-border sticky top-0 bg-header backdrop-blur-md z-50"></header>
 
       <main className="flex-grow">{children}</main>
 
       {/* フッター */}
-      <footer className="bg-notion-warm border-t border-notion-border py-12 px-4"></footer>
+      <footer className="bg-surface-muted border-t border-border py-12 px-4"></footer>
     </div>
   );
 }
