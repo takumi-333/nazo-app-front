@@ -1,6 +1,6 @@
 import { ButtonHTMLAttributes, forwardRef } from "react";
 
-export type ButtonVariant = "primary" | "secondary" | "ghost" | "danger";
+export type ButtonVariant = "primary" | "secondary" | "ghost" | "danger" | "custom";
 export type ButtonSize = "sm" | "md" | "lg";
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
@@ -40,7 +40,10 @@ const variantStyles: Record<ButtonVariant, string> = {
     "hover:bg-[#b84a00] hover:scale-[1.02] " +
     "active:scale-90 " +
     "disabled:opacity-50 disabled:cursor-not-allowed",
+  custom:
+    "border-transparent disabled:opacity-50 disabled:cursor-not-allowed",
 };
+
 
 const sizeStyles: Record<ButtonSize, string> = {
   sm: "text-caption font-semibold px-3 py-1.5 gap-1.5",
@@ -61,6 +64,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       disabled,
       className = "",
       children,
+      type = "button",
       ...props
     },
     ref,
@@ -70,6 +74,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     return (
       <button
         ref={ref}
+        type={type}
         disabled={isDisabled}
         aria-disabled={isDisabled}
         aria-busy={isLoading}
