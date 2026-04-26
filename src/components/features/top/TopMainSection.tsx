@@ -18,9 +18,7 @@ export function TopMainSection({ title, children }: TopMainSectionProps) {
 
         {/* アクションボタンパート */}
         <div className="flex items-center justify-center pb-24">
-          <div className="flex flex-wrap justify-center gap-10 md:gap-16">
-            {children}
-          </div>
+          <div className="flex flex-wrap justify-center gap-10 md:gap-16">{children}</div>
         </div>
       </section>
     </main>
