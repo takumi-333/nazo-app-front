@@ -19,7 +19,7 @@ export default function PlayPage() {
 
     handledErrorRef.current = true;
 
-    toast.error(error);
+    toast.error(error, 2000);
     router.replace("/");
   }, [error, router, toast]);
 
@@ -28,7 +28,7 @@ export default function PlayPage() {
   }
 
   function handleWrong() {
-    // TODO: 不正解トースト表示
+    toast.warning("不正解！もう一度考えてみましょう", 1500);
   }
 
   function handleGiveup() {

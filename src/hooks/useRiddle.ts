@@ -1,3 +1,4 @@
+import { fetchRandomRiddle } from "@/lib/api/riddles";
 import { useState, useEffect } from "react";
 
 export interface Riddle {
@@ -19,34 +20,39 @@ export function useRiddle(): UseRiddleResult {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    let cancelled = false;
+    const controller = new AbortController();
 
-    async function fetchRiddle() {
+    async function loadRiddle() {
       setLoading(true);
       setError(null);
 
       try {
-        const res = await fetch("/api/riddles/random");
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        const data: Riddle = await res.json();
+        const data = await fetchRandomRiddle(controller.signal);
 
         // for debug
-        // const data: Riddle = {
+        // const data = {
         //   riddle_id: "1",
-        //   image_url: "abc",
+        //   image_url: "http://abc.png",
         //   has_hint: false,
         // }
-        if (!cancelled) setRiddle(data);
+        setRiddle(data);
       } catch (e) {
-        if (!cancelled) setError("問題の取得に失敗しました");
+        if (controller.signal.aborted) {
+          return;
+        }
+
+        setError("問題の取得に失敗しました");
       } finally {
-        if (!cancelled) setLoading(false);
+        if (!controller.signal.aborted) {
+          setLoading(false);
+        }
       }
     }
 
-    fetchRiddle();
+    loadRiddle();
+
     return () => {
-      cancelled = true;
+      controller.abort();
     };
   }, []);
 
