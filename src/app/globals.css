@@ -1,23 +1,70 @@
 @import "tailwindcss";
 
-* {
-  box-sizing: border-box;
+@theme {
+  --color-canvas: var(--app-color-canvas);
+  --color-text-main: var(--app-color-text-main);
+
+  --color-action-create: var(--app-color-action-create);
+  --color-action-create-hover: var(--app-color-action-create-hover);
+  --color-action-play: var(--app-color-action-play);
+  --color-action-play-hover: var(--app-color-action-play-hover);
+
+  --color-toast-success: var(--app-color-toast-success);
+  --color-toast-error: var(--app-color-toast-error);
+
+  --color-danger: var(--app-color-danger);
+  --color-danger-hover: var(--app-color-danger-hover);
+
+  --text-card-title: 1.25rem;
+  --text-card-title--line-height: 1.4;
+  --text-card-title--font-weight: 700;
+
+  --shadow-card: 0 4px 14px rgb(0 0 0 / 0.08);
+  --shadow-card-hover: 0 8px 24px rgb(0 0 0 / 0.14);
+
+  --tracking-hero: -0.04em;
+}
+
+:root {
+  --app-color-canvas: #fbfaf8;
+  --app-color-text-main: #191919;
+
+  --app-color-action-create: #1aae39;
+  --app-color-action-create-hover: #17a034;
+
+  --app-color-action-play: #dd5b00;
+  --app-color-action-play-hover: #c75200;
+
+  --app-color-toast-success: #1aae39;
+  --app-color-toast-error: #e5484d;
+
+  --app-color-danger: #e5484d;
+  --app-color-danger-hover: #d93d42;
+}
+
+.dark {
+  --app-color-canvas: #191919;
+  --app-color-text-main: #f7f7f7;
+
+  --app-color-action-create: #22c55e;
+  --app-color-action-create-hover: #16a34a;
+
+  --app-color-action-play: #f97316;
+  --app-color-action-play-hover: #ea580c;
+
+  --app-color-toast-success: #22c55e;
+  --app-color-toast-error: #f87171;
+
+  --app-color-danger: #f87171;
+  --app-color-danger-hover: #ef4444;
 }
 
 html,
 body {
-  max-width: 100vw;
-  overflow-x: hidden;
+  min-height: 100%;
 }
 
 body {
-  margin: 0;
-  color: #171717;
-  background: #ffffff;
-  font-family: Arial, Helvetica, sans-serif;
-}
-
-a {
-  color: inherit;
-  text-decoration: none;
+  background: var(--app-color-canvas);
+  color: var(--app-color-text-main);
 }
