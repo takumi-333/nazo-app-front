@@ -12,46 +12,35 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   isLoading?: boolean;
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Style maps
-// ─────────────────────────────────────────────────────────────────────────────
-
 const variantStyles: Record<ButtonVariant, string> = {
   primary:
-    "bg-notion-blue text-white border-transparent " +
-    "hover:bg-notion-blue-active " +
-    "active:scale-90 " +
-    "disabled:bg-warm-300 disabled:text-white disabled:cursor-not-allowed",
+    "bg-primary text-text-inverse border-transparent " +
+    "hover:bg-primary-hover hover:scale-[1.02] " +
+    "active:scale-95",
 
   secondary:
-    "bg-black/5 text-[rgba(0,0,0,0.95)] border-transparent " +
-    "hover:bg-black/10 hover:scale-[1.02] " +
-    "active:scale-90 " +
-    "disabled:opacity-50 disabled:cursor-not-allowed",
+    "bg-surface text-text-main border-border " +
+    "hover:bg-surface-muted hover:scale-[1.02] " +
+    "active:scale-95",
 
   ghost:
-    "bg-transparent text-[rgba(0,0,0,0.95)] border-transparent " +
-    "hover:underline hover:text-notion-blue " +
-    "active:scale-95 " +
-    "disabled:opacity-40 disabled:cursor-not-allowed disabled:no-underline",
+    "bg-transparent text-text-main border-transparent " +
+    "hover:bg-surface-muted hover:text-primary " +
+    "active:scale-95",
 
   danger:
-    "bg-orange text-white border-transparent " +
-    "hover:bg-[#b84a00] hover:scale-[1.02] " +
-    "active:scale-90 " +
-    "disabled:opacity-50 disabled:cursor-not-allowed",
-  custom: "border-transparent disabled:opacity-50 disabled:cursor-not-allowed",
+    "bg-danger text-text-inverse border-transparent " +
+    "hover:bg-danger-hover hover:scale-[1.02] " +
+    "active:scale-95",
+
+  custom: "border-transparent active:scale-95",
 };
 
 const sizeStyles: Record<ButtonSize, string> = {
-  sm: "text-caption font-semibold px-3 py-1.5 gap-1.5",
-  md: "text-nav    font-semibold px-4 py-2   gap-2",
-  lg: "text-body   font-bold     px-6 py-3   gap-2.5",
+  sm: "text-sm font-semibold px-3 py-1.5 gap-1.5",
+  md: "text-base    font-semibold px-4 py-2   gap-2",
+  lg: "text-lg   font-bold     px-6 py-3   gap-2.5",
 };
-
-// ─────────────────────────────────────────────────────────────────────────────
-// Component
-// ─────────────────────────────────────────────────────────────────────────────
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   (
@@ -79,11 +68,25 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         className={[
           // Base
           "inline-flex items-center justify-center",
-          "border rounded-micro",
+          "rounded-md border",
           "font-sans leading-none",
-          "transition-all duration-[160ms] ease-[cubic-bezier(0.25,0.1,0.25,1)]",
-          "outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-1",
+          "transition-all duration-150 ease-out",
+          "outline-none",
           "select-none cursor-pointer",
+
+          // Focus
+          "focus-visible:ring-2",
+          "focus-visible:ring-primary",
+          "focus-visible:ring-offset-2",
+          "focus-visible:ring-offset-canvas",
+
+          // Disabled
+          "disabled:pointer-events-none",
+          "disabled:cursor-not-allowed",
+          "disabled:bg-surface-muted",
+          "disabled:text-text-muted",
+          "disabled:border-border",
+          "disabled:opacity-70",
           // Variant
           variantStyles[variant],
           // Size
@@ -99,7 +102,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         {isLoading && (
           <span
             aria-hidden="true"
-            className="inline-block w-4 h-4 rounded-full border-2 border-current border-t-transparent animate-spin-slow"
+            className="inline-block w-4 h-4 rounded-full border-2 border-current border-t-transparent animate-spin"
           />
         )}
         {children}

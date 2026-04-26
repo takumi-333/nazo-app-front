@@ -3,60 +3,28 @@
 import { useState } from "react";
 import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
+import { useAnswer } from "@/hooks/useAnswer";
 
 type Props = {
   riddleId?: string;
   onCorrect: () => void;
   onWrong: () => void;
+  onGiveup: () => void;
   disabled?: boolean;
 };
 
 export function AnswerForm({ riddleId, onCorrect, onWrong, disabled = false }: Props) {
   const [answer, setAnswer] = useState("");
-  const [submitting, setSubmitting] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
+  const { submit, submitting, error } = useAnswer(riddleId, { onCorrect, onWrong });
   const isDisabled = disabled || submitting;
   const trimmedAnswer = answer.trim();
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-
     if (isDisabled || !riddleId) return;
-
-    if (!trimmedAnswer) {
-      setError("回答を入力してください");
-      return;
-    }
-
-    setSubmitting(true);
-    setError(null);
-
-    try {
-      const res = await fetch(`/api/riddles/${riddleId}/check`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ answer_text: trimmedAnswer }),
-      });
-
-      if (!res.ok) {
-        setError("エラーが発生しました");
-        return;
-      }
-
-      const data: { correct: boolean } = await res.json();
-
-      if (data.correct) {
-        onCorrect();
-      } else {
-        setAnswer("");
-        onWrong();
-      }
-    } catch {
-      setError("通信エラーが発生しました");
-    } finally {
-      setSubmitting(false);
-    }
+    if (!trimmedAnswer) return;
+    await submit(trimmedAnswer);
+    setAnswer("");
   }
 
   return (
@@ -66,18 +34,15 @@ export function AnswerForm({ riddleId, onCorrect, onWrong, disabled = false }: P
           label="回答"
           type="text"
           value={answer}
-          onChange={(trimmedValue) => {
-            setAnswer(trimmedValue);
-          }}
-          placeholder={disabled ? "問題を読み込み中…" : "答えを入力…"}
+          onChange={(e) => setAnswer(e.target.value)}
+          placeholder={disabled ? "問題を読み込み中..." : "答えを入力..."}
           disabled={isDisabled}
           autoComplete="off"
           error={error ?? undefined}
         />
-
         <Button
           type="submit"
-          variant="secondary"
+          variant="primary"
           size="md"
           isLoading={submitting}
           disabled={isDisabled || !trimmedAnswer}

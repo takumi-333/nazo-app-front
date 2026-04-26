@@ -9,8 +9,8 @@ type TopActionButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
 type TopActionButtonVariant = "create" | "play";
 
 const topActionButtonStyles: Record<TopActionButtonVariant, string> = {
-  create: "bg-[#1aae39] hover:bg-[#17a034] text-white border-[#1aae39]",
-  play: "bg-[#dd5b00] hover:bg-[#c75200] text-white border-[#dd5b00]",
+  create: "bg-action-create hover:bg-action-create-hover text-white",
+  play: "bg-action-play hover:bg-action-play-hover text-white",
 };
 
 export const TopActionButton = forwardRef<HTMLButtonElement, TopActionButtonProps>(
@@ -25,7 +25,7 @@ export const TopActionButton = forwardRef<HTMLButtonElement, TopActionButtonProp
           "sm:h-[180px] sm:w-[180px]",
           "flex-col rounded-lg",
           "text-card-title",
-          "shadow-card hover:shadow-card-hover",
+          "shadow-soft hover:shadow-soft-hover",
           "hover:scale-[1.02]",
           topActionButtonStyles[variant],
           className,
