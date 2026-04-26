@@ -97,11 +97,25 @@ function ToastElement({ item, onDismiss }: { item: ToastItem; onDismiss: (id: st
   const config = variantConfig[item.variant];
   const duration = item.duration ?? 3000;
 
+  const [visible, setVisible] = useState(false);
   const [exiting, setExiting] = useState(false);
   const [progress, setProgress] = useState(100);
 
   const rafRef = useRef<number | null>(null);
+  const enterRafRef = useRef<number | null>(null);
   const startRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    enterRafRef.current = requestAnimationFrame(() => {
+      setVisible(true);
+    });
+
+    return () => {
+      if (enterRafRef.current !== null) {
+        cancelAnimationFrame(enterRafRef.current);
+      }
+    };
+  }, []);
 
   useEffect(() => {
     startRef.current = performance.now();
@@ -130,6 +144,11 @@ function ToastElement({ item, onDismiss }: { item: ToastItem; onDismiss: (id: st
     };
   }, [duration, item.id, onDismiss]);
 
+  const handleDismiss = () => {
+    setExiting(true);
+    setTimeout(() => onDismiss(item.id), 300);
+  };
+
   return (
     <div
       role="status"
@@ -144,7 +163,9 @@ function ToastElement({ item, onDismiss }: { item: ToastItem; onDismiss: (id: st
         "shadow-soft",
         "text-sm font-medium",
         "transition-all duration-300 ease-out",
-        exiting ? "translate-y-2 scale-[0.98] opacity-0" : "translate-y-0 scale-100 opacity-100",
+        exiting || !visible
+          ? "-translate-y-3 scale-[0.98] opacity-0"
+          : "translate-y-0 scale-100 opacity-100",
         config.className,
       ]
         .filter(Boolean)
@@ -157,10 +178,7 @@ function ToastElement({ item, onDismiss }: { item: ToastItem; onDismiss: (id: st
       <button
         type="button"
         aria-label="通知を閉じる"
-        onClick={() => {
-          setExiting(true);
-          setTimeout(() => onDismiss(item.id), 300);
-        }}
+        onClick={handleDismiss}
         className={[
           "ml-1 shrink-0",
           "rounded-sm p-0.5",
@@ -199,6 +217,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
 
   const show = useCallback((message: string, variant: ToastVariant = "info", duration = 3000) => {
     const id = `toast-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`;
+
     setToasts((prev) => [...prev, { id, message, variant, duration }]);
   }, []);
 
@@ -216,7 +235,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
             aria-live="polite"
             aria-atomic="false"
             className={[
-              "pointer-events-none fixed bottom-6 left-1/2 z-[9999]",
+              "pointer-events-none fixed top-6 left-1/2 z-[9999]",
               "flex -translate-x-1/2 flex-col items-center gap-2",
               "px-4",
             ].join(" ")}
