@@ -1,5 +1,5 @@
 import { ButtonHTMLAttributes, forwardRef } from "react";
-import { Button } from "@/app/components/ui/Button";
+import { Button } from "@/components/ui/Button";
 
 type TopActionButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   children: React.ReactNode;
