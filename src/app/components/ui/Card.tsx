@@ -44,11 +44,7 @@ export function CardImage({
 }
 
 /** カードのコンテンツ領域 */
-export function CardBody({
-  children,
-  className = "",
-  ...props
-}: HTMLAttributes<HTMLDivElement>) {
+export function CardBody({ children, className = "", ...props }: HTMLAttributes<HTMLDivElement>) {
   return (
     <div className={`p-6 flex flex-col gap-3 ${className}`} {...props}>
       {children}
@@ -78,16 +74,9 @@ export function CardTitle({
 }
 
 /** カードのメタ情報（プレイ数・評価など） */
-export function CardMeta({
-  children,
-  className = "",
-  ...props
-}: HTMLAttributes<HTMLDivElement>) {
+export function CardMeta({ children, className = "", ...props }: HTMLAttributes<HTMLDivElement>) {
   return (
-    <div
-      className={`flex items-center gap-3 flex-wrap ${className}`}
-      {...props}
-    >
+    <div className={`flex items-center gap-3 flex-wrap ${className}`} {...props}>
       {children}
     </div>
   );
@@ -119,11 +108,7 @@ export function CardMetaItem({
 }
 
 /** カードのフッター（アクションボタンなど） */
-export function CardFooter({
-  children,
-  className = "",
-  ...props
-}: HTMLAttributes<HTMLDivElement>) {
+export function CardFooter({ children, className = "", ...props }: HTMLAttributes<HTMLDivElement>) {
   return (
     <div
       className={[
@@ -144,16 +129,7 @@ export function CardFooter({
 // ─────────────────────────────────────────────────────────────────────────────
 
 export const Card = forwardRef<HTMLDivElement, CardProps>(
-  (
-    {
-      hoverable = false,
-      clickable = false,
-      className = "",
-      children,
-      ...props
-    },
-    ref,
-  ) => {
+  ({ hoverable = false, clickable = false, className = "", children, ...props }, ref) => {
     return (
       <div
         ref={ref}

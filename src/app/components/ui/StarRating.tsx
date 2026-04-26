@@ -38,24 +38,16 @@ const STAR_LABELS: Record<StarValue, string> = {
 };
 
 const sizeMap = {
-  sm: { star: 20, gap: "gap-1"   },
+  sm: { star: 20, gap: "gap-1" },
   md: { star: 28, gap: "gap-1.5" },
-  lg: { star: 36, gap: "gap-2"   },
+  lg: { star: 36, gap: "gap-2" },
 };
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Star icon
 // ─────────────────────────────────────────────────────────────────────────────
 
-function StarIcon({
-  filled,
-  hovered,
-  size,
-}: {
-  filled: boolean;
-  hovered: boolean;
-  size: number;
-}) {
+function StarIcon({ filled, hovered, size }: { filled: boolean; hovered: boolean; size: number }) {
   const active = filled || hovered;
   return (
     <svg
@@ -82,8 +74,8 @@ export function StarRating({
   onChange,
   label = "この謎を評価してください",
   disabled = false,
-  locked   = false,
-  size     = "md",
+  locked = false,
+  size = "md",
   className = "",
 }: StarRatingProps) {
   const [hoverIndex, setHoverIndex] = useState<number>(0);
@@ -112,16 +104,11 @@ export function StarRating({
   const groupId = `star-rating-${label.slice(0, 8).replace(/\s/g, "")}`;
 
   return (
-    <fieldset
-      className={`border-none p-0 m-0 ${className}`}
-      aria-disabled={disabled}
-    >
+    <fieldset className={`border-none p-0 m-0 ${className}`} aria-disabled={disabled}>
       <legend className="text-caption font-semibold text-[rgba(0,0,0,0.95)] mb-2">
         {label}
         {!locked && !disabled && (
-          <span className="ml-2 text-micro text-warm-500 font-normal">
-            （必須）
-          </span>
+          <span className="ml-2 text-micro text-warm-500 font-normal">（必須）</span>
         )}
       </legend>
 
@@ -132,7 +119,7 @@ export function StarRating({
         onMouseLeave={() => setHoverIndex(0)}
       >
         {([1, 2, 3, 4, 5] as StarValue[]).map((star) => {
-          const isFilled  = value != null && star <= value;
+          const isFilled = value != null && star <= value;
           const isHovered = isInteractive && star <= hoverIndex;
           const isSelected = value === star;
 
@@ -150,30 +137,18 @@ export function StarRating({
                 "flex items-center justify-center p-0.5 rounded-subtle",
                 "outline-none transition-colors duration-[160ms]",
                 "focus-visible:ring-2 focus-visible:ring-focus",
-                isInteractive
-                  ? "cursor-pointer"
-                  : "cursor-default",
+                isInteractive ? "cursor-pointer" : "cursor-default",
                 // Color: gold when filled/hovered, muted otherwise
-                isFilled || isHovered
-                  ? "text-riddle-gold"
-                  : "text-warm-300",
+                isFilled || isHovered ? "text-riddle-gold" : "text-warm-300",
                 // Animate the newly selected star
-                isSelected && !disabled
-                  ? "animate-star-fill"
-                  : "",
+                isSelected && !disabled ? "animate-star-fill" : "",
                 // Scale on hover
-                isInteractive && isHovered
-                  ? "scale-110"
-                  : "",
+                isInteractive && isHovered ? "scale-110" : "",
               ]
                 .filter(Boolean)
                 .join(" ")}
             >
-              <StarIcon
-                filled={isFilled}
-                hovered={isHovered}
-                size={starSize}
-              />
+              <StarIcon filled={isFilled} hovered={isHovered} size={starSize} />
             </button>
           );
         })}
@@ -191,9 +166,7 @@ export function StarRating({
 
       {/* Locked badge */}
       {locked && value != null && (
-        <p className="mt-1.5 text-micro text-warm-500">
-          評価を送信しました
-        </p>
+        <p className="mt-1.5 text-micro text-warm-500">評価を送信しました</p>
       )}
     </fieldset>
   );

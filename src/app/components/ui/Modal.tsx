@@ -1,13 +1,6 @@
 "use client";
 
-import {
-  forwardRef,
-  HTMLAttributes,
-  ReactNode,
-  useCallback,
-  useEffect,
-  useRef,
-} from "react";
+import { forwardRef, HTMLAttributes, ReactNode, useCallback, useEffect, useRef } from "react";
 
 import { createPortal } from "react-dom";
 
@@ -44,10 +37,7 @@ export function ModalHeader({
   ...props
 }: HTMLAttributes<HTMLDivElement>) {
   return (
-    <div
-      className={`mb-4 ${className}`}
-      {...props}
-    >
+    <div className={`mb-4 ${className}`} {...props}>
       {children}
     </div>
   );
@@ -72,16 +62,9 @@ export function ModalTitle({
   );
 }
 
-export function ModalBody({
-  children,
-  className = "",
-  ...props
-}: HTMLAttributes<HTMLDivElement>) {
+export function ModalBody({ children, className = "", ...props }: HTMLAttributes<HTMLDivElement>) {
   return (
-    <div
-      className={`text-body text-warm-700 leading-[1.5] ${className}`}
-      {...props}
-    >
+    <div className={`text-body text-warm-700 leading-[1.5] ${className}`} {...props}>
       {children}
     </div>
   );
@@ -93,10 +76,7 @@ export function ModalFooter({
   ...props
 }: HTMLAttributes<HTMLDivElement>) {
   return (
-    <div
-      className={`mt-8 flex items-center justify-end gap-3 ${className}`}
-      {...props}
-    >
+    <div className={`mt-8 flex items-center justify-end gap-3 ${className}`} {...props}>
       {children}
     </div>
   );
@@ -116,9 +96,9 @@ export function Modal({
   maxWidth = "480px",
   className = "",
 }: ModalProps) {
-  const panelRef   = useRef<HTMLDivElement>(null);
-  const titleId    = useRef(`modal-title-${Math.random().toString(36).slice(2, 9)}`).current;
-  const descId     = useRef(`modal-desc-${Math.random().toString(36).slice(2, 9)}`).current;
+  const panelRef = useRef<HTMLDivElement>(null);
+  const titleId = useRef(`modal-title-${Math.random().toString(36).slice(2, 9)}`).current;
+  const descId = useRef(`modal-desc-${Math.random().toString(36).slice(2, 9)}`).current;
 
   // ESC キーで閉じる
   useEffect(() => {
@@ -135,7 +115,9 @@ export function Modal({
     if (!open) return;
     const prev = document.body.style.overflow;
     document.body.style.overflow = "hidden";
-    return () => { document.body.style.overflow = prev; };
+    return () => {
+      document.body.style.overflow = prev;
+    };
   }, [open]);
 
   // 開いた直後にパネルにフォーカス（キーボードトラップの起点）
@@ -190,9 +172,7 @@ export function Modal({
         onClick={(e) => e.stopPropagation()}
       >
         {/* スクリーンリーダー用タイトル（hidden でも id は必要） */}
-        {title && (
-          <ModalTitle id={titleId}>{title}</ModalTitle>
-        )}
+        {title && <ModalTitle id={titleId}>{title}</ModalTitle>}
         {description && (
           <p id={descId} className="sr-only">
             {description}
@@ -213,13 +193,7 @@ export function Modal({
             "focus-visible:ring-2 focus-visible:ring-focus outline-none",
           ].join(" ")}
         >
-          <svg
-            width="16"
-            height="16"
-            viewBox="0 0 16 16"
-            fill="none"
-            aria-hidden="true"
-          >
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
             <path
               d="M12 4L4 12M4 4l8 8"
               stroke="currentColor"
