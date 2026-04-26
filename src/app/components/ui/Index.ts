@@ -27,6 +27,3 @@ export type { ToastItem, ToastVariant } from "./Toast";
 export { Card, CardImage, CardBody, CardTitle, CardMeta, CardMetaItem, CardFooter } from "./Card";
 export type { CardProps } from "./Card";
 
-// Badge
-export { Badge, PublishedBadge, DraftBadge, PrivateBadge, SuspendedBadge } from "./Badge";
-export type { BadgeProps, BadgeStatus, BadgeVariant } from "./Badge";
