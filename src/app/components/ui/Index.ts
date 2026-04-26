@@ -26,4 +26,3 @@ export type { ToastItem, ToastVariant } from "./Toast";
 // Card
 export { Card, CardImage, CardBody, CardTitle, CardMeta, CardMetaItem, CardFooter } from "./Card";
 export type { CardProps } from "./Card";
-
