@@ -3,7 +3,7 @@ import { useState } from "react";
 
 export function useAnswer(
   riddleId: string | undefined,
-  { onCorrect, onWrong }: { onCorrect: () => void; onWrong: () => void }
+  { onCorrect, onWrong }: { onCorrect: () => void; onWrong: () => void },
 ) {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -14,7 +14,7 @@ export function useAnswer(
     setError(null);
     try {
       const data = await checkAnswer(riddleId, answer);
-    data.correct ? onCorrect() : onWrong();
+      data.correct ? onCorrect() : onWrong();
     } catch {
       setError("通信エラーが発生しました");
     } finally {

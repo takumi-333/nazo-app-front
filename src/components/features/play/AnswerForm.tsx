@@ -16,21 +16,15 @@ type Props = {
 export function AnswerForm({ riddleId, onCorrect, onWrong, disabled = false }: Props) {
   const [answer, setAnswer] = useState("");
   const { submit, submitting, error } = useAnswer(riddleId, { onCorrect, onWrong });
-
   const isDisabled = disabled || submitting;
   const trimmedAnswer = answer.trim();
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-
     if (isDisabled || !riddleId) return;
-
-    if (!trimmedAnswer) {
-      return;
-    }
-
-    await submit(trimmedAnswer)
-    setAnswer("")
+    if (!trimmedAnswer) return;
+    await submit(trimmedAnswer);
+    setAnswer("");
   }
 
   return (
@@ -40,18 +34,15 @@ export function AnswerForm({ riddleId, onCorrect, onWrong, disabled = false }: P
           label="回答"
           type="text"
           value={answer}
-          onChange={(trimmedValue) => {
-            setAnswer(trimmedValue);
-          }}
-          placeholder={disabled ? "問題を読み込み中…" : "答えを入力…"}
+          onChange={(e) => setAnswer(e.target.value)}
+          placeholder={disabled ? "問題を読み込み中..." : "答えを入力..."}
           disabled={isDisabled}
           autoComplete="off"
           error={error ?? undefined}
         />
-
         <Button
           type="submit"
-          variant="secondary"
+          variant="primary"
           size="md"
           isLoading={submitting}
           disabled={isDisabled || !trimmedAnswer}

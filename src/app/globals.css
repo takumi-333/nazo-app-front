@@ -1,62 +1,118 @@
 @import "tailwindcss";
 
 @theme {
+  /* Surface */
   --color-canvas: var(--app-color-canvas);
+  --color-surface: var(--app-color-surface);
+  --color-surface-muted: var(--app-color-surface-muted);
+
+  /* Text */
   --color-text-main: var(--app-color-text-main);
+  --color-text-muted: var(--app-color-text-muted);
+  --color-text-inverse: var(--app-color-text-inverse);
 
-  --color-action-create: var(--app-color-action-create);
-  --color-action-create-hover: var(--app-color-action-create-hover);
-  --color-action-play: var(--app-color-action-play);
-  --color-action-play-hover: var(--app-color-action-play-hover);
+  /* Border */
+  --color-border: var(--app-color-border);
 
-  --color-toast-success: var(--app-color-toast-success);
-  --color-toast-error: var(--app-color-toast-error);
+  /* Semantic actions */
+  --color-primary: var(--app-color-primary);
+  --color-primary-hover: var(--app-color-primary-hover);
+
+  --color-accent: var(--app-color-accent);
+  --color-accent-hover: var(--app-color-accent-hover);
+
+  --color-success: var(--app-color-success);
+  --color-success-hover: var(--app-color-success-hover);
 
   --color-danger: var(--app-color-danger);
   --color-danger-hover: var(--app-color-danger-hover);
 
+  --color-warning: var(--app-color-warning);
+  --color-warning-hover: var(--app-color-warning-hover);
+
+  /* Typography */
   --text-card-title: 1.25rem;
   --text-card-title--line-height: 1.4;
   --text-card-title--font-weight: 700;
 
-  --shadow-card: 0 4px 14px rgb(0 0 0 / 0.08);
-  --shadow-card-hover: 0 8px 24px rgb(0 0 0 / 0.14);
+  /* Shadow */
+  --shadow-soft: 0 4px 14px rgb(0 0 0 / 0.22);
+  --shadow-soft-hover: 0 8px 24px rgb(0 0 0 / 0.14);
 
+  /* Tracking */
   --tracking-hero: -0.04em;
+
+  /* Others */
+  --color-action-create: var(--app-color-action-create);
+  --color-action-create-hover: var(--app-color-action-create-hover);
+  --color-action-play: var(--app-color-action-play);
+  --color-action-play-hover: var(--app-color-action-play-hover);
 }
 
 :root {
   --app-color-canvas: #fbfaf8;
+  --app-color-surface: #ffffff;
+  --app-color-surface-muted: #f5f1eb;
+
   --app-color-text-main: #191919;
+  --app-color-text-muted: #6b625c;
+  --app-color-text-inverse: #ffffff;
+
+  --app-color-border: #e5ded6;
+
+  --app-color-primary: #2383e2;
+  --app-color-primary-hover: #1a73d9;
+
+  --app-color-accent: #dd5b00;
+  --app-color-accent-hover: #c75200;
+
+  --app-color-success: #1aae39;
+  --app-color-success-hover: #17a034;
+
+  --app-color-danger: #e5484d;
+  --app-color-danger-hover: #d93d42;
+
+  --app-color-warning: #f5a524;
+  --app-color-warning-hover: #d98b00;
 
   --app-color-action-create: #1aae39;
   --app-color-action-create-hover: #17a034;
 
   --app-color-action-play: #dd5b00;
   --app-color-action-play-hover: #c75200;
-
-  --app-color-toast-success: #1aae39;
-  --app-color-toast-error: #e5484d;
-
-  --app-color-danger: #e5484d;
-  --app-color-danger-hover: #d93d42;
 }
 
 .dark {
   --app-color-canvas: #191919;
+  --app-color-surface: #242424;
+  --app-color-surface-muted: #2f2f2f;
+
   --app-color-text-main: #f7f7f7;
+  --app-color-text-muted: #b8b8b8;
+  --app-color-text-inverse: #191919;
+
+  --app-color-border: #3a3a3a;
+
+  --app-color-primary: #60a5fa;
+  --app-color-primary-hover: #3b82f6;
+
+  --app-color-accent: #f97316;
+  --app-color-accent-hover: #ea580c;
+
+  --app-color-success: #22c55e;
+  --app-color-success-hover: #16a34a;
+
+  --app-color-danger: #f87171;
+  --app-color-danger-hover: #ef4444;
+
+  --app-color-warning: #fbbf24;
+  --app-color-warning-hover: #f59e0b;
 
   --app-color-action-create: #22c55e;
   --app-color-action-create-hover: #16a34a;
 
   --app-color-action-play: #f97316;
   --app-color-action-play-hover: #ea580c;
-
-  --app-color-toast-success: #22c55e;
-  --app-color-toast-error: #f87171;
-
-  --app-color-danger: #f87171;
-  --app-color-danger-hover: #ef4444;
 }
 
 html,
