@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { ROUTES } from "../constants/routes";
+import { ROUTES } from "../../constants/routes";
 import { TopActionButton } from "../../components/features/top/TopActionButton";
 import { TopMainSection } from "../../components/features/top/TopMainSection";
 
