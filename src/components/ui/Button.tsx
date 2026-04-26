@@ -18,8 +18,8 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 
 const variantStyles: Record<ButtonVariant, string> = {
   primary:
-    "bg-notion-blue text-white border-transparent " +
-    "hover:bg-notion-blue-active " +
+    "bg-black/10 text-white border-transparent " +
+    "hover:bg-black/10" +
     "active:scale-90 " +
     "disabled:bg-warm-300 disabled:text-white disabled:cursor-not-allowed",
 

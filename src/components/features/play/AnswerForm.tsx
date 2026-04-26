@@ -3,18 +3,19 @@
 import { useState } from "react";
 import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
+import { useAnswer } from "@/hooks/useAnswer";
 
 type Props = {
   riddleId?: string;
   onCorrect: () => void;
   onWrong: () => void;
+  onGiveup: () => void;
   disabled?: boolean;
 };
 
 export function AnswerForm({ riddleId, onCorrect, onWrong, disabled = false }: Props) {
   const [answer, setAnswer] = useState("");
-  const [submitting, setSubmitting] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const { submit, submitting, error } = useAnswer(riddleId, { onCorrect, onWrong });
 
   const isDisabled = disabled || submitting;
   const trimmedAnswer = answer.trim();
@@ -25,38 +26,11 @@ export function AnswerForm({ riddleId, onCorrect, onWrong, disabled = false }: P
     if (isDisabled || !riddleId) return;
 
     if (!trimmedAnswer) {
-      setError("回答を入力してください");
       return;
     }
 
-    setSubmitting(true);
-    setError(null);
-
-    try {
-      const res = await fetch(`/api/riddles/${riddleId}/check`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ answer_text: trimmedAnswer }),
-      });
-
-      if (!res.ok) {
-        setError("エラーが発生しました");
-        return;
-      }
-
-      const data: { correct: boolean } = await res.json();
-
-      if (data.correct) {
-        onCorrect();
-      } else {
-        setAnswer("");
-        onWrong();
-      }
-    } catch {
-      setError("通信エラーが発生しました");
-    } finally {
-      setSubmitting(false);
-    }
+    await submit(trimmedAnswer)
+    setAnswer("")
   }
 
   return (
