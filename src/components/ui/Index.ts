@@ -8,7 +8,7 @@ export { Button } from "./Button";
 export type { ButtonProps, ButtonVariant, ButtonSize } from "./Button";
 
 // Input
-export { Input, useInputTrim } from "./Input";
+export { Input } from "./Input";
 export type { InputProps } from "./Input";
 
 // Modal
