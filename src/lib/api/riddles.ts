@@ -14,11 +14,11 @@ export async function fetchRandomRiddle(signal?: AbortSignal): Promise<Riddle> {
   });
 }
 
-export async function checkAnswer(riddleId: string, answer: string): Promise<{ correct: boolean }> {
-  return apiFetch<{correct: boolean}>(`riddles/${riddleId}/check`, {
+export async function checkAnswer(riddleId: string, answer_text: string): Promise<{ correct: boolean, explanation: string }> {
+  return apiFetch<{correct: boolean, explanation: string}>(`/riddles/${riddleId}/check`, {
     method: "POST",
     body: {
-      answer,
+      answer_text,
     }
   });
 }
