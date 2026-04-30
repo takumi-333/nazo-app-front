@@ -29,12 +29,6 @@ export function useRiddle(): UseRiddleResult {
       try {
         const data = await fetchRandomRiddle(controller.signal);
 
-        // for debug
-        // const data = {
-        //   riddle_id: "1",
-        //   image_url: "http://abc.png",
-        //   has_hint: false,
-        // }
         setRiddle(data);
       } catch (e) {
         if (controller.signal.aborted) {
