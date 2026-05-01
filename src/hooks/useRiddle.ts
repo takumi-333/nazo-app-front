@@ -1,5 +1,5 @@
 import { fetchRandomRiddle } from "@/lib/api/riddles";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 
 export interface Riddle {
   riddle_id: string;
@@ -12,12 +12,14 @@ interface UseRiddleResult {
   riddle: Riddle | null;
   loading: boolean;
   error: string | null;
+  nextRiddle: () => void;
 }
 
 export function useRiddle(): UseRiddleResult {
   const [riddle, setRiddle] = useState<Riddle | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const [fetchCount, setFetchCount] = useState<number>(0);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -48,7 +50,11 @@ export function useRiddle(): UseRiddleResult {
     return () => {
       controller.abort();
     };
+  }, [fetchCount]);
+
+  const nextRiddle = useCallback(() => {
+    setFetchCount((c) => c + 1);
   }, []);
 
-  return { riddle, loading, error };
+  return { riddle, loading, error, nextRiddle };
 }

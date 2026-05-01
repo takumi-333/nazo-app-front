@@ -8,18 +8,22 @@ export interface Riddle {
 }
 
 export async function fetchRandomRiddle(signal?: AbortSignal): Promise<Riddle> {
-  return apiFetch<Riddle> ("/riddles/random", {
+  return apiFetch<Riddle>("/riddles/random", {
     method: "GET",
     signal,
   });
 }
 
-export async function checkAnswer(riddleId: string, answer_text: string): Promise<{ correct: boolean, explanation: string }> {
-  return apiFetch<{correct: boolean, explanation: string}>(`/riddles/${riddleId}/check`, {
+export async function checkAnswer(
+  riddleId: string,
+  answer_text?: string,
+  give_up?: boolean,
+): Promise<{ correct: boolean; explanation: string }> {
+  return apiFetch<{ correct: boolean; explanation: string }>(`/riddles/${riddleId}/check`, {
     method: "POST",
     body: {
       answer_text,
-    }
+      give_up,
+    },
   });
 }
-
