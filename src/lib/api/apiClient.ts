@@ -8,17 +8,11 @@ type ApiFetchOptions = Omit<RequestInit, "body"> & {
   body?: BodyInit | object | null;
 };
 
-export async function apiFetch<T>(
-  path: string,
-  options: ApiFetchOptions = {}
-): Promise<T> {
+export async function apiFetch<T>(path: string, options: ApiFetchOptions = {}): Promise<T> {
   const { body, headers, ...rest } = options;
 
   const isJsonBody =
-    body !== undefined &&
-    body !== null &&
-    typeof body === "object" &&
-    !(body instanceof FormData);
+    body !== undefined && body !== null && typeof body === "object" && !(body instanceof FormData);
 
   const res = await fetch(`${API_BASE_URL}${path}`, {
     ...rest,
