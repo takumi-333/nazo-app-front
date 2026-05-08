@@ -27,3 +27,23 @@ export async function checkAnswer(
     },
   });
 }
+
+export async function submitResult(
+  riddleId: string,
+  score: number,
+  is_correct: boolean,
+  duration_ms: number,
+  used_hint: boolean,
+  attempt_count: number,
+): Promise<void> {
+  return apiFetch<void>(`/riddles/${riddleId}/submit`, {
+    method: "POST",
+    body: {
+      score,
+      is_correct,
+      duration_ms,
+      used_hint,
+      attempt_count,
+    },
+  });
+}
