@@ -27,6 +27,7 @@ export default function PlayPage() {
     clearError,
     correct,
     explanation,
+    stats,
   } = useAnswer(riddle?.riddle_id, {
     onCorrect: handleCorrect,
     onWrong: handleWrong,
@@ -86,6 +87,7 @@ export default function PlayPage() {
           riddleId={riddle?.riddle_id}
           correct={correct}
           explanation={explanation}
+          stats={stats}
           onRated={handleRated}
         />
       )}

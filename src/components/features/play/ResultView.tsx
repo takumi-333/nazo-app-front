@@ -1,15 +1,46 @@
 "use client";
 
-import { StarRating } from "@/components/ui/StarRating";
+import { StarRating, StarValue } from "@/components/ui/StarRating";
+import { AnswerStats } from "@/hooks/useAnswer";
+import { submitResult } from "@/lib/api/riddles";
+import { useState } from "react";
 
 type Props = {
   riddleId?: string;
   correct: boolean;
   explanation: string | null;
   onRated: () => void;
+  stats: AnswerStats;
 };
 
-export function ResultView({ riddleId, correct, explanation, onRated }: Props) {
+export function ResultView({ riddleId, correct, explanation, onRated, stats }: Props) {
+
+  const [rating, setRating] = useState<StarValue | null>(null);
+  const [submitting, setSubmitting] = useState(false);
+
+  const handleSelect = async (value: StarValue) => {
+    setRating(value);
+    setSubmitting(true);
+    try {
+      await submitResult(
+        riddleId!,
+        value, 
+        stats.is_correct,
+        stats.duration_ms,
+        stats.used_hint,
+        stats.attempt_count,
+      );
+
+      // 評価後の処理
+      onRated();
+
+    } catch (error) {
+      console.error("評価送信エラー:", error);
+    } finally {
+      setSubmitting(false);
+    }
+  };
+  
   return (
     <div className="flex flex-col gap-6">
       {/* 正誤バナー */}
@@ -31,6 +62,14 @@ export function ResultView({ riddleId, correct, explanation, onRated }: Props) {
 
       {/* 評価フォーム（送信で次へ） */}
       {/* <RatingForm riddleId={riddle.riddle_id} onSubmitted={onRated} /> */}
+      <StarRating
+        value={rating}
+        onSelect={handleSelect}
+        label="この謎はどうでしたか？"
+        disabled={submitting}
+        locked={false}
+        size="md"
+      />
     </div>
   );
 }

@@ -1,94 +1,68 @@
 "use client";
-
 import { KeyboardEvent, useCallback, useState } from "react";
-
-// ─────────────────────────────────────────────────────────────────────────────
-// Types
-// ─────────────────────────────────────────────────────────────────────────────
 
 export type StarValue = 1 | 2 | 3 | 4 | 5;
 
 export interface StarRatingProps {
-  /** 現在の評価値（controlled） */
   value?: StarValue | null;
-  /** 評価変更コールバック */
-  onChange?: (value: StarValue) => void;
-  /** ラベルテキスト */
+  onSelect?: (value: StarValue) => void;
   label?: string;
-  /** 評価前（未選択）は操作不可 — 外側から渡す */
   disabled?: boolean;
-  /** 評価確定後にロック（再選択不可） */
   locked?: boolean;
-  /** コンポーネントサイズ */
   size?: "sm" | "md" | "lg";
-  /** 追加クラス */
   className?: string;
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Helpers
-// ─────────────────────────────────────────────────────────────────────────────
-
 const STAR_LABELS: Record<StarValue, string> = {
-  1: "1：とても難しかった",
-  2: "2：難しかった",
-  3: "3：普通",
-  4: "4：楽しかった",
-  5: "5：とても楽しかった",
+  1: "とても面白くなかった",
+  2: "面白くなかった",
+  3: "普通",
+  4: "面白かった",
+  5: "とても面白かった",
 };
 
 const sizeMap = {
-  sm: { star: 20, gap: "gap-1" },
-  md: { star: 28, gap: "gap-1.5" },
-  lg: { star: 36, gap: "gap-2" },
+  sm: { star: 18, px: "px-2 py-1.5" },
+  md: { star: 24, px: "px-3 py-2" },
+  lg: { star: 30, px: "px-4 py-2.5" },
 };
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Star icon
-// ─────────────────────────────────────────────────────────────────────────────
-
-function StarIcon({ filled, hovered, size }: { filled: boolean; hovered: boolean; size: number }) {
-  const active = filled || hovered;
+function StarIcon({ filled, size }: { filled: boolean; size: number }) {
   return (
     <svg
       width={size}
       height={size}
       viewBox="0 0 24 24"
-      fill={active ? "currentColor" : "none"}
+      fill={filled ? "currentColor" : "none"}
       stroke="currentColor"
-      strokeWidth={active ? "0" : "1.5"}
+      strokeWidth={filled ? "0" : "1.8"}
       aria-hidden="true"
-      className="transition-all duration-[160ms]"
+      className="transition-all duration-150"
     >
       <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
     </svg>
   );
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Component
-// ─────────────────────────────────────────────────────────────────────────────
-
 export function StarRating({
   value,
-  onChange,
+  onSelect,
   label = "この謎を評価してください",
   disabled = false,
   locked = false,
   size = "md",
   className = "",
 }: StarRatingProps) {
-  const [hoverIndex, setHoverIndex] = useState<number>(0);
-
+  const [hoverIndex, setHoverIndex] = useState(0);
   const isInteractive = !disabled && !locked;
-  const { star: starSize, gap } = sizeMap[size];
+  const { star: starSize, px } = sizeMap[size];
 
   const handleSelect = useCallback(
     (star: StarValue) => {
       if (!isInteractive) return;
-      onChange?.(star);
+      onSelect?.(star);
     },
-    [isInteractive, onChange],
+    [isInteractive, onSelect],
   );
 
   const handleKeyDown = useCallback(
@@ -101,72 +75,68 @@ export function StarRating({
     [handleSelect],
   );
 
-  const groupId = `star-rating-${label.slice(0, 8).replace(/\s/g, "")}`;
-
   return (
     <fieldset className={`border-none p-0 m-0 ${className}`} aria-disabled={disabled}>
-      <legend className="text-caption font-semibold text-[rgba(0,0,0,0.95)] mb-2">
+      <legend className="text-sm font-semibold text-foreground mb-3">
         {label}
         {!locked && !disabled && (
-          <span className="ml-2 text-micro text-warm-500 font-normal">（必須）</span>
+          <span className="ml-2 text-xs text-muted-foreground font-normal">タップして送信</span>
         )}
       </legend>
 
       <div
-        className={`flex items-center ${gap}`}
+        className="flex items-center gap-2"
         role="group"
         aria-label={label}
         onMouseLeave={() => setHoverIndex(0)}
       >
         {([1, 2, 3, 4, 5] as StarValue[]).map((star) => {
-          const isFilled = value != null && star <= value;
-          const isHovered = isInteractive && star <= hoverIndex;
+          const isFilled = (value != null && star <= value) || (isInteractive && star <= hoverIndex);
           const isSelected = value === star;
 
           return (
             <button
               key={star}
               type="button"
-              aria-label={STAR_LABELS[star]}
+              aria-label={`${star}星: ${STAR_LABELS[star]}`}
               aria-pressed={isSelected}
               disabled={!isInteractive}
               onMouseEnter={() => isInteractive && setHoverIndex(star)}
               onClick={() => handleSelect(star)}
               onKeyDown={(e) => handleKeyDown(e, star)}
               className={[
-                "flex items-center justify-center p-0.5 rounded-subtle",
-                "outline-none transition-colors duration-[160ms]",
-                "focus-visible:ring-2 focus-visible:ring-focus",
-                isInteractive ? "cursor-pointer" : "cursor-default",
-                // Color: gold when filled/hovered, muted otherwise
-                isFilled || isHovered ? "text-riddle-gold" : "text-warm-300",
-                // Animate the newly selected star
-                isSelected && !disabled ? "animate-star-fill" : "",
-                // Scale on hover
-                isInteractive && isHovered ? "scale-110" : "",
+                // ボタン形状
+                "flex items-center justify-center rounded-lg border transition-all duration-150",
+                px,
+                "outline-none focus-visible:ring-2 focus-visible:ring-ring",
+                // インタラクティブ時
+                isInteractive
+                  ? "cursor-pointer active:scale-95"
+                  : "cursor-default",
+                // 選択・ホバー状態
+                isFilled
+                  ? "bg-amber-50 border-amber-300 text-amber-500 shadow-sm"
+                  : "bg-muted/50 border-border text-muted-foreground hover:border-amber-300 hover:bg-amber-50/50",
+                // 選択済みは少し強調
+                isSelected ? "ring-1 ring-amber-400 scale-105" : "",
+                // ロック時は選択星だけ残す
+                locked && !isSelected ? "opacity-40" : "",
               ]
                 .filter(Boolean)
                 .join(" ")}
             >
-              <StarIcon filled={isFilled} hovered={isHovered} size={starSize} />
+              <StarIcon filled={isFilled} size={starSize} />
             </button>
           );
         })}
-
-        {/* Current selection label */}
-        {value != null && (
-          <span
-            aria-live="polite"
-            className="ml-2 text-caption text-warm-700 font-medium animate-fade-in"
-          >
-            {STAR_LABELS[value]}
-          </span>
-        )}
       </div>
 
-      {/* Locked badge */}
-      {locked && value != null && (
-        <p className="mt-1.5 text-micro text-warm-500">評価を送信しました</p>
+      {/* 選択中ラベル */}
+      {value != null && (
+        <p className="mt-2 text-xs text-muted-foreground animate-in fade-in">
+          {value}星: {STAR_LABELS[value]}
+          {locked && " — 送信済み"}
+        </p>
       )}
     </fieldset>
   );

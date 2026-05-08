@@ -53,6 +53,7 @@ export function useRiddle(): UseRiddleResult {
   }, [fetchCount]);
 
   const nextRiddle = useCallback(() => {
+    setRiddle(null);
     setFetchCount((c) => c + 1);
   }, []);
 
